@@ -294,7 +294,7 @@ impl MessageRegistry {
         let erased_fns = self
             .serialize_fns_map
             .get_mut(&kind)
-            .expect("the message is not part of the protocol");
+            .expect("the message is not part of the protocol (1)");
         erased_fns.add_map_entities::<M>();
     }
 
@@ -307,7 +307,7 @@ impl MessageRegistry {
         let erased_fns = self
             .serialize_fns_map
             .get(&kind)
-            .context("the message is not part of the protocol")?;
+            .context("the message is not part of the protocol (2)")?;
         let net_id = self.kind_map.net_id(&kind).unwrap();
         writer.start_write();
         writer.encode(net_id, Fixed)?;
@@ -328,7 +328,7 @@ impl MessageRegistry {
         let erased_fns = self
             .serialize_fns_map
             .get(kind)
-            .context("the message is not part of the protocol")?;
+            .context("the message is not part of the protocol (3)")?;
         // SAFETY: the ErasedSerializeFns was created for the type M
         unsafe { erased_fns.deserialize(reader, entity_map) }
     }
